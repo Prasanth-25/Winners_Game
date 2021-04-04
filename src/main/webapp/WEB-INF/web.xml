@@ -41,6 +41,12 @@
 		<description></description>
 		<servlet-class>winners.game.login.LoginServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PlayerMetaData</servlet-name>
+		<display-name>PlayerMetaData</display-name>
+		<description></description>
+		<servlet-class>winners.game.metadata.PlayerMetaData</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
@@ -52,5 +58,9 @@
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/LoginServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PlayerMetaData</servlet-name>
+		<url-pattern>/PlayerMetaData</url-pattern>
 	</servlet-mapping>
 </web-app>

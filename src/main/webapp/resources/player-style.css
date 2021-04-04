@@ -1,0 +1,108 @@
+body{
+	background: #f8f9fa!important;
+}
+
+.bg-light{
+	background-color: #fff!important;
+}
+
+.navbar{
+	padding: 0px !important;
+}
+
+.logo-text{
+	position: absolute;
+    margin: 10px;
+}
+
+.navbar-logo{
+	margin-left: 15px;
+    width: 210px;
+    background: cyan;
+}
+
+.logo-img{
+	width: 50px;
+	height: 50px;
+	margin-left: 5px;
+}
+
+.user-logo{
+	width: 45px;
+	height: 45px;
+	margin-left: 5px;
+	background-size: cover;
+    border-radius: 50% 50% 50% 50%;
+}
+
+.navbar-user{
+	float:right;
+	margin-right: 150px;
+}
+
+.container{
+	margin: 3%;
+    max-width: 93vw;
+    height: 83vh;
+}
+
+.drop-btn{
+	background: none;
+    border: none;
+    color: darkslategrey;
+}
+
+.dropdown-menu{
+	padding:10px;
+	min-width: 7rem;
+}
+
+.user-img{
+	width: 50px;
+    height: 45px;
+    border-radius: 25px;
+    background: none;
+    border: none;
+}
+
+.user-details{
+	width: 20%;
+    border: 1px solid lightgrey;
+    height: 100%;
+    float: left;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.post-cards{
+	width: 75%;
+    border: 1px solid lightgray;
+    float: right;
+    height: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow-y: overlay !important;
+    overflow-x: hidden !important;
+}
+
+.left-user-logo{
+	width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    margin: 27%;
+    margin-bottom: 0px;
+    margin-top: 30px;
+    border: none;
+    background: none;
+}
+
+.left-user-img{
+	width: 100px;
+    height: 100px;
+    background-size: cover;
+    border-radius: 50% 50% 50% 50%;
+}
+
+.form-control:focus{
+	box-shadow:none;
+}

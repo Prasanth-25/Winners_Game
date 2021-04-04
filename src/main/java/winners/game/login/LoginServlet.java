@@ -54,7 +54,8 @@ public class LoginServlet extends HttpServlet {
 			while(rs.next()) {
 				if(rs.getString(1).equalsIgnoreCase(email)) {
 					if(rs.getString(2).equals(password)) {
-						response.sendRedirect(rs.getString(3)+".jsp");
+						request.setAttribute("UserMail", email);
+						request.getRequestDispatcher(rs.getString(3)+".jsp").forward(request, response);
 						break;
 					}else {
 						System.out.println("Password Wrong");
@@ -63,6 +64,7 @@ public class LoginServlet extends HttpServlet {
 					System.out.println("Username wrong");
 				}
 			}
+			con.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
