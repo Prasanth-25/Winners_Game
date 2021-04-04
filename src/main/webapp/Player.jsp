@@ -86,11 +86,9 @@
 		<span><%= playerInfo.get(6)%></span>
 		<span><%= playerInfo.get(7)%></span>
 		<span><%= playerInfo.get(8)%></span>
-		<embed src="resources/upload-images/<%= playerInfo.get(10)%>" width="50" height="37" type="application/pdf">
+		<embed id="docsData" src="resources/upload-images/<%= playerInfo.get(10)%>" width="100px" height="100px" type="application/pdf" hidden="true">
+		<span>Certificates:</span> <button onclick="getCertsData()">View</button>
 		<%}%>
-		</div>
-		<div>
-		Popupmodel
 		</div>
 		
 		<div class="post-cards">
@@ -151,11 +149,23 @@
 		<%}%>
 		
 		</div>
+		<div id="docsPopupView" class="popup-screen">
+			<div class="popup-content">
+				<div class="close-popup">
+				<span>X</span>
+				</div>
+				<div class="certs-box">
+					<embed src="" type="application/pdf" width="100%" height="100%" id="viewCerts">
+				</div>
+			</div>
+		</div>
 	</div>
+	
 
 </body>
 <script type="text/javascript">
 $('#player-data').click();
+$('#docsPopupView').hide();
 $("#updatePlayerData").on('click', function(){
 	
 		$("#savePlayerData").click()
@@ -181,5 +191,9 @@ $("#savePlayerData").on('click', function(){
 		  success: function(response) {}
 		});
 	});
+function getCertsData(){
+	$('#docsPopupView').show();
+	$('#viewCerts').attr('src', $("#docsData").attr('src'));
+}
 </script>
 </html>
