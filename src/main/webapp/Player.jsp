@@ -40,7 +40,7 @@
 				try {
 					Connection con = dbconnection.getConnection();
 					Statement statement = con.createStatement();
-					String sqlQuery = "select * from playerdata";
+					String sqlQuery = "select * from playerdata where Email='"+request.getAttribute("userEmail")+"'";
 					ResultSet rs = statement.executeQuery(sqlQuery);
 					while(rs.next()) {
 						playerInfo.add(rs.getString(1));playerInfo.add(rs.getString(2));
@@ -61,14 +61,16 @@
     <button class="dropdown-toggle drop-btn" type="button" data-bs-toggle="dropdown">
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
-      <li><a href="#">Edit Profile</a></li>
-      <li><a href="#">Logout</a></li>
+      <li style="cursor:pointer" id="editProfileData">Edit Profile</li>
+      <li><a href="index.html">Logout</a></li>
     </ul>
   </div>
    </div>
 </nav>
 	<div class="container">
 		<div class="user-details">
+		
+		<div class="first-userBlock">
 		<button class="left-user-logo">
 		<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("no")){ %>
 			<img class="left-user-img" src="resources/img/unnameduser.png">
@@ -76,19 +78,30 @@
 			<img class="left-user-img" src="resources/upload-images/<%= playerInfo.get(9)%>">
 			<%}%>
 		</button>
-		<span style="margin:auto;display:table"><%= request.getAttribute("userName") %></span><hr>
-		<span style="margin:auto;display:table"><b>Email:</b>&nbsp;<%= request.getAttribute("userEmail") %></span>
-		<span style="margin:9px;"><b>Phone:</b>&nbsp;<%= request.getAttribute("userNumber") %></span><hr>
+		<span class="user-name-left"><%= request.getAttribute("userName") %></span>
+		</div>
+		
+		<div class="second-userBlock">
+		<p style="margin-left:9px;display:table;"><img width="25px" src="resources/img/email-logo.png">&nbsp;<%= request.getAttribute("userEmail") %></p>
+		<p style="margin-left:9px;"><img width="25px" src="resources/img/mobile.png">&nbsp;<%= request.getAttribute("userNumber") %></p>
+		</div>
+		
 		<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
-		<span><%= playerInfo.get(3)%></span>
-		<span><%= playerInfo.get(4)%></span>
-		<span><%= playerInfo.get(5)%></span>
-		<span><%= playerInfo.get(6)%></span>
-		<span><%= playerInfo.get(7)%></span>
-		<span><%= playerInfo.get(8)%></span>
+		<div class="third-userBlock">
+		<div class="profile-block">
+			<span style="font-size:20px;font-weight:500"><%= playerInfo.get(3)%></span><br>
+			<span style="font-size:1.1rem"><%= playerInfo.get(4)%></span><br>
+		</div><br>
+		<button class="docs-view" onclick="getCertsData()">My Certificates</button><br><br>
 		<embed id="docsData" src="resources/upload-images/<%= playerInfo.get(10)%>" width="100px" height="100px" type="application/pdf" hidden="true">
-		<span>Certificates:</span> <button onclick="getCertsData()">View</button>
+		<div class="location-view">
+			<span><%= playerInfo.get(5)%></span><br>
+			<span><%= playerInfo.get(6)%></span><br>
+			<span><%= playerInfo.get(7)%> - <%= playerInfo.get(8)%></span>
+		</div>
+		</div>
 		<%}%>
+		
 		</div>
 		
 		<div class="post-cards">
@@ -146,16 +159,38 @@
 			  <button type="submit" id="updatePlayerData" class="btn btn-primary">Update</button>
 		</form>
 	</div>
-		<%}%>
+		<%}else if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){%>
+			<div class="container">
+			<div class="card" style="width: 18rem;">
+			  <img class="card-img-top" src="..." alt="Card image cap">
+			  <div class="card-body">
+			    <h5 class="card-title">Card title</h5>
+			    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			    <a href="#" class="btn btn-primary">Go somewhere</a>
+			  </div>
+			</div>
+			</div>
+		<%} %>
 		
 		</div>
 		<div id="docsPopupView" class="popup-screen">
 			<div class="popup-content">
-				<div class="close-popup">
+				<div id="closePopup" class="close-popup">
 				<span>X</span>
 				</div>
 				<div class="certs-box">
 					<embed src="" type="application/pdf" width="100%" height="100%" id="viewCerts">
+				</div>
+			</div>
+		</div>
+		
+		<div id="editProfilePopup" class="popup-screen">
+			<div class="popup-content">
+				<div id="closePopup" class="close-profile-popup">
+				<span>X</span>
+				</div>
+				<div class="certs-box">
+					
 				</div>
 			</div>
 		</div>
@@ -166,6 +201,7 @@
 <script type="text/javascript">
 $('#player-data').click();
 $('#docsPopupView').hide();
+$('#editProfilePopup').hide();
 $("#updatePlayerData").on('click', function(){
 	
 		$("#savePlayerData").click()
@@ -192,8 +228,28 @@ $("#savePlayerData").on('click', function(){
 		});
 	});
 function getCertsData(){
-	$('#docsPopupView').show();
 	$('#viewCerts').attr('src', $("#docsData").attr('src'));
+	$('#docsPopupView').show();
 }
+$("#closePopup").on('click', function(){
+	$('#docsPopupView').hide();
+	$('#editProfilePopup').hide();
+});
+$("#docsPopupView").on('click', function(){
+	$('#docsPopupView').hide();
+});
+$(document).on('keydown', function(e){
+	console.log(e.keyCode)
+	if(e.keyCode === 27){
+		$('#docsPopupView').hide();
+		$('#editProfilePopup').hide();
+	}
+});
+$("#editProfileData").on('click', function(){
+	$('#editProfilePopup').show();
+});
+$("#editProfilePopup").on('click', function(){
+	$('#editProfilePopup').hide();
+});
 </script>
 </html>

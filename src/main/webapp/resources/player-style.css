@@ -1,9 +1,9 @@
 body{
-	background: #f8f9fa!important;
+	background: #f3f2ef !important;
 }
 
 .bg-light{
-	background-color: #fff!important;
+	background-color: #bd9898 !important;
 }
 
 .navbar{
@@ -13,12 +13,13 @@ body{
 .logo-text{
 	position: absolute;
     margin: 10px;
+    font-family: sans-serif;
 }
 
 .navbar-logo{
 	margin-left: 15px;
     width: 210px;
-    background: cyan;
+   /* background: cyan;*/
 }
 
 .logo-img{
@@ -67,11 +68,11 @@ body{
 
 .user-details{
 	width: 20%;
-    border: 1px solid lightgrey;
+   /* border: 1px solid lightgrey;*/
     height: 100%;
     float: left;
-    background: #fff;
-    border-radius: 10px;
+   /* background: #fff;*/
+   /* border-radius: 10px;*/
 }
 
 .post-cards{
@@ -89,13 +90,21 @@ body{
 	width: 100px;
     height: 100px;
     border-radius: 50px;
-    margin: 27%;
+    margin-left: 27%;
     margin-bottom: 0px;
-    margin-top: 30px;
+    margin-top: 15px;
     border: none;
     background: none;
 }
 
+.user-name-left{
+	margin: auto;
+    display: table;
+    font-size: 20px;
+    font-weight: 500;
+    padding-top: 15px;
+    font-family: system-ui;
+}
 .left-user-img{
 	width: 100px;
     height: 100px;
@@ -147,4 +156,70 @@ body{
 	float: left;
     width: 100%;
     height: 100%;
+}
+
+.profile-block{
+	text-align: center;
+    font-family: system-ui;
+}
+
+.docs-view{
+	margin-left: 15px;
+	border: none;
+    background: none;
+    color: #0a66c2;
+    font-family: system-ui;
+    font-weight: 650;
+}
+
+.docs-view:hover{
+	text-decoration: underline;
+}
+
+.location-view{
+	margin-left: 15px;
+    font-weight: 500;
+    font-family: system-ui;
+}
+
+.first-userBlock{
+	border: 1px solid lightgrey;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    background: #f1e9e9;
+}
+
+.second-userBlock{
+	padding-top: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid lightgrey;
+	background: #fff;
+	font-family: system-ui;
+}
+
+.third-userBlock{
+	padding-top: 10px;
+    border-radius: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid lightgrey;
+    background: #fff;
+    height: 47%;
+}
+
+.close-profile-popup{
+	font-weight: bolder;
+    width: 30px;
+    float: right;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: cursive;
+    /* position: relative; */
+    margin: 15px;
+}
+
+.close-profile-popup:hover {
+    background: lightgrey;
 }
