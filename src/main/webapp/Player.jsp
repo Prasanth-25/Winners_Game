@@ -50,6 +50,11 @@
 						playerInfo.add(rs.getString(9));playerInfo.add(rs.getString(10));
 						playerInfo.add(rs.getString(11));
 					}
+					sqlQuery = "select password from userData where Email='"+request.getAttribute("userEmail")+"'";
+					rs = statement.executeQuery(sqlQuery);
+					while(rs.next()){
+						playerInfo.add(rs.getString(1));
+					}
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +66,9 @@
     <button class="dropdown-toggle drop-btn" type="button" data-bs-toggle="dropdown">
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
-      <li style="cursor:pointer" id="editProfileData">Edit Profile</li>
+    <% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
+      <li style="cursor:pointer" id="editProfileData">My Profile</li>
+      <%}%>
       <li><a href="index.html">Logout</a></li>
     </ul>
   </div>
@@ -78,12 +85,12 @@
 			<img class="left-user-img" src="resources/upload-images/<%= playerInfo.get(9)%>">
 			<%}%>
 		</button>
-		<span class="user-name-left"><%= request.getAttribute("userName") %></span>
+		<span id="displayName" class="user-name-left"><%= request.getAttribute("userName") %></span>
 		</div>
 		
 		<div class="second-userBlock">
 		<p style="margin-left:9px;display:table;"><img width="25px" src="resources/img/email-logo.png">&nbsp;<%= request.getAttribute("userEmail") %></p>
-		<p style="margin-left:9px;"><img width="25px" src="resources/img/mobile.png">&nbsp;<%= request.getAttribute("userNumber") %></p>
+		<p style="margin-left:9px;"><img width="25px" src="resources/img/mobile.png">&nbsp;<span id="displayNumber"><%= request.getAttribute("userNumber") %></span></p>
 		</div>
 		
 		<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
@@ -184,16 +191,87 @@
 			</div>
 		</div>
 		
+	<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
 		<div id="editProfilePopup" class="popup-screen">
-			<div class="popup-content">
-				<div id="closePopup" class="close-profile-popup">
+			<div id="updatePlayerContent" class="popup-profile-update">
+				<div id="closeEditPopup" class="close-profile-popup">
 				<span>X</span>
-				</div>
-				<div class="certs-box">
-					
+				</div><br>
+				<div class="container">
+				<form>
+				  <h2>Personal Information</h2><br>
+				  <div class="row">
+				  <div class="col-md-5">
+				      <label for="updateUser"><b>Username</b></label>
+				      <input type="text" class="form-control" id="updateUser" name="updateUser" value="<%= playerInfo.get(0)%>">
+				    </div>
+				    <div class="col-md-5">
+				      <label for="updateNumber"><b>Mobile Number</b></label>
+				      <input type="text" class="form-control" id="updateNumber" name="updateNumber" value="<%= playerInfo.get(2)%>">
+				    </div>
+				   </div><br>
+				   <div class="row">
+					    <div class="col-md-5">
+					      <label for="updateRole"><b>Role</b></label>
+					      <input type="text" class="form-control" id="updateRole" name="updateRole" value="<%= playerInfo.get(4)%>">
+					    </div>
+					    <div id="pwdUpdateBtn" class="col-md-4">
+					      <label><b>Password</b></label>
+					      <p id="changePwd"><b>Change Password</b></p>
+					    </div>
+					    <div id="pwdCurrent" class="col-md-5">
+					    <label><b>Password</b></label>
+					    <input type="password" style="width:78%" class="form-control" id="currentPass" placeholder="Type Current Password">
+					    <span style="color:#ff0000;margin-left:3px" id="wrongPass">Wrong Password!.Try again..</span>
+					    <button style="float: right;margin-top: -39px;" class="btn btn-primary" onclick="validateCurrentPwd(event,'<%= playerInfo.get(11)%>')">Change</button>
+					    </div>
+					    <div id="pwdSet" class="col-md-5">
+					    <label><b>Password</b></label>
+					    <input type="password" style="width:78%" class="form-control" id="newPass" placeholder="Type New Password">
+					    <button style="float: right;margin-top: -39px;width: 82px" class="btn btn-primary">Set</button>
+					    </div>
+					    <div id="pwdConfirm" class="col-md-5">
+					    <label><b>Password</b></label>
+					    <input type="password" style="width:78%" class="form-control" id="confirmPass" placeholder="Confirm New Password">
+					    <button style="float: right;margin-top: -39px;" class="btn btn-primary">Confirm</button>
+					    </div>
+				    </div>
+				    <br>
+				  <div class="form-group col-md-10">
+				    <label for="updateAddress"><b>Address</b></label>
+				    <input type="text" class="form-control" id="updateAddress" name="updateAddress" value="<%= playerInfo.get(5)%>">
+				  </div><br>
+				  <div class="form-group col-md-10">
+				    <label for="updateAddress2"><b>Address line 2</b></label>
+				    <input type="text" class="form-control" id="updateAddress2" name="updateAddress2" value="<%= playerInfo.get(6)%>">
+				  </div><br>
+				  <div class="row">
+				    <div class="form-group col-md-6">
+				      <label for="updateCity"><b>City</b></label>
+				      <input type="text" name="updateCity" class="form-control" id="updateCity" value="<%= playerInfo.get(7)%>">
+				    </div>
+				    <div class="form-group col-md-2">
+				      <label for="updateZip"><b>Zip</b></label>
+				      <input type="text" name="updateZip" class="form-control" id="updateZip" value="<%= playerInfo.get(8)%>">
+				    </div>
+				  </div><br>
+				  <button hidden="true" id="myProfileData">Click</button>
+		  		</form>
+		  		 <form action="UpdatePlayerServlet" method="post" enctype='multipart/form-data'>
+				  <div class="form-group">
+				    <label for="formControlFile1"><b>Profile Photo</b></label><br>
+		    		<input type="file" name="file" class="form-control-file" id="formControlFile1">
+				  </div><br>
+				  <div class="form-group">
+				    <label for="formControlFile2"><b>Certificates</b> <span style="font-size:13px">(Upload your Recent Nation-level or State-level certificates in a single PDF file)</span></label><br>
+		    		<input type="file" name="file" class="form-control-file" id="formControlFile2" accept="application/pdf">
+				  </div><br> 
+			  	<button type="submit" id="myProfileUpdate" class="btn btn-primary">Update</button>
+				</form><br>
 				</div>
 			</div>
 		</div>
+		<%} %>
 	</div>
 	
 
@@ -208,6 +286,7 @@ $("#updatePlayerData").on('click', function(){
 		
 	
 });
+$("#wrongPass").hide();
 $("#savePlayerData").on('click', function(){
 	console.log("Clicked")
 	let playerDataJson = []
@@ -233,23 +312,67 @@ function getCertsData(){
 }
 $("#closePopup").on('click', function(){
 	$('#docsPopupView').hide();
+});
+$("#closeEditPopup").on('click', function(){
 	$('#editProfilePopup').hide();
+	$("#pwdUpdateBtn").show();
+	$("#currentPass").val("");
+	$("#wrongPass").hide();
 });
 $("#docsPopupView").on('click', function(){
 	$('#docsPopupView').hide();
 });
 $(document).on('keydown', function(e){
-	console.log(e.keyCode)
 	if(e.keyCode === 27){
 		$('#docsPopupView').hide();
 		$('#editProfilePopup').hide();
+		$("#pwdUpdateBtn").show();
+		$("#currentPass").val("");
+		$("#wrongPass").hide();
 	}
 });
 $("#editProfileData").on('click', function(){
 	$('#editProfilePopup').show();
+	$("#pwdCurrent").hide();$("#pwdSet").hide();
+	$("#pwdConfirm").hide();
 });
-$("#editProfilePopup").on('click', function(){
-	$('#editProfilePopup').hide();
+$("#editProfilePopup").on('click', function(e){
+	if(e.target.id === "editProfilePopup"){
+		$('#editProfilePopup').hide();
+		$("#pwdUpdateBtn").show();
+		$("#currentPass").val("");
+		$("#wrongPass").hide();
+	}
+});
+$("#changePwd").on('click', function(e){
+	$("#pwdUpdateBtn").hide();
+	$("#pwdCurrent").show();$("#pwdSet").hide();
+	$("#pwdConfirm").hide();
+});
+function validateCurrentPwd(e, passData){
+	e.preventDefault();
+	if($("#currentPass").val() === passData){
+		$("#pwdUpdateBtn").hide();
+		$("#pwdCurrent").hide();$("#pwdSet").show();
+		$("#pwdConfirm").hide();
+		$("#wrongPass").hide();
+	}else{
+		$("#wrongPass").show();
+	}
+}
+$("#pwdSet button").on('click', function(e){
+	e.preventDefault();
+	console.log($("#newPass").val());
+	$("#pwdUpdateBtn").hide();
+	$("#pwdCurrent").hide();$("#pwdSet").hide();
+	$("#pwdConfirm").show();
+});
+$("#pwdConfirm button").on('click', function(e){
+	e.preventDefault();
+	console.log($("#confirmPass").val());
+	/*$("#pwdUpdateBtn").hide();
+	$("#pwdCurrent").hide();$("#pwdSet").hide();
+	$("#pwdConfirm").show();*/
 });
 </script>
 </html>

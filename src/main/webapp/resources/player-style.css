@@ -82,7 +82,10 @@ body{
     height: 100%;
     background: #fff;
     border-radius: 10px;
-    overflow-y: overlay !important;
+}
+
+.post-cards:hover{
+	overflow-y: overlay !important;
     overflow-x: hidden !important;
 }
 
@@ -222,4 +225,31 @@ body{
 
 .close-profile-popup:hover {
     background: lightgrey;
+}
+
+.popup-profile-update{
+	margin: 0 auto;
+    top: 12%;
+    position: relative;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius:10px;
+    overflow: scroll;
+}
+
+.pwd-btn{
+	margin-top: 23px;
+	margin-left: -14px;
+}
+
+#changePwd{
+	cursor:pointer;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	color:#2874f0;
+}
+
+#changePwd:hover{
+	text-decoration: underline;
 }
