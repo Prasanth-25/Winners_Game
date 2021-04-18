@@ -22,17 +22,17 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import winners.game.connection.DBConnection;
 
 /**
- * Servlet implementation class UpdatePlayerServlet
+ * Servlet implementation class UpdateClubServlet
  */
-public class UpdatePlayerServlet extends HttpServlet {
+public class UpdateClubServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	List<String> updatePlayerData;
+	List<String> updateClubData;
 	public String globalEmail;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdatePlayerServlet() {
+    public UpdateClubServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,16 +44,16 @@ public class UpdatePlayerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		globalEmail = request.getParameter("email");
-		updatePlayerData = new ArrayList<String>();
-		updatePlayerData.add(request.getParameter("nameUpdate"));
-		updatePlayerData.add(request.getParameter("numberUpdate"));
-		updatePlayerData.add(request.getParameter("roleUpdate"));
-		updatePlayerData.add(request.getParameter("addressUpdate"));
-		updatePlayerData.add(request.getParameter("address2Update"));
-		updatePlayerData.add(request.getParameter("cityUpdate"));
-		updatePlayerData.add(request.getParameter("zipUpdate"));
+		updateClubData = new ArrayList<String>();
+		updateClubData.add(request.getParameter("nameUpdate"));
+		updateClubData.add(request.getParameter("numberUpdate"));
+		updateClubData.add(request.getParameter("sportsUpdate"));
+		updateClubData.add(request.getParameter("addressUpdate"));
+		updateClubData.add(request.getParameter("address2Update"));
+		updateClubData.add(request.getParameter("cityUpdate"));
+		updateClubData.add(request.getParameter("zipUpdate"));
 		if(request.getParameter("pwdUpdate")!=null) {
-			updatePlayerData.add(request.getParameter("pwdUpdate"));
+			updateClubData.add(request.getParameter("pwdUpdate"));
 		}
 	}
 
@@ -76,11 +76,11 @@ public class UpdatePlayerServlet extends HttpServlet {
 		                String fileName = item.getName();
 		                try {
 		                    String uploadFolder = getServletContext().getRealPath("") + "/resources/upload-images";
-		                    String filePath = uploadFolder + File.separator + updatePlayerData.get(0) +"-"+fileName;
+		                    String filePath = uploadFolder + File.separator + updateClubData.get(0) +"-"+fileName;
 		                    if(fileName.equals("")) {
 		                    	fileNametoDB.add(fileName);
 		                    }else {
-		                    fileNametoDB.add(updatePlayerData.get(0) +"-"+fileName);
+		                    fileNametoDB.add(updateClubData.get(0) +"-"+fileName);
 		                    }
 		                    File saveFile = new File(filePath);                        
 		                    saveFile.createNewFile();
@@ -97,32 +97,32 @@ public class UpdatePlayerServlet extends HttpServlet {
 				try {
 					Connection con = dbconnection.getConnection();
 					Statement statement = con.createStatement();
-					String profileUpdate = "update playerdata set name=?, contact_number=?, role=?, address=?, addressExtended=?, city=?, zipcode=? where email=?";
+					String profileUpdate = "update clubdata set name=?, contact_number=?, availableSports=?, address=?, addressExtended=?, city=?, zipcode=? where email=?";
 					PreparedStatement pS = con.prepareStatement(profileUpdate);
-					pS.setString(1, updatePlayerData.get(0));pS.setString(2, updatePlayerData.get(1));
-					pS.setString(3, updatePlayerData.get(2));pS.setString(4, updatePlayerData.get(3));
-					pS.setString(5, updatePlayerData.get(4));pS.setString(6, updatePlayerData.get(5));
-					pS.setString(7, updatePlayerData.get(6));pS.setString(8, globalEmail);
+					pS.setString(1, updateClubData.get(0));pS.setString(2, updateClubData.get(1));
+					pS.setString(3, updateClubData.get(2));pS.setString(4, updateClubData.get(3));
+					pS.setString(5, updateClubData.get(4));pS.setString(6, updateClubData.get(5));
+					pS.setString(7, updateClubData.get(6));pS.setString(8, globalEmail);
 					pS.executeUpdate();
 					String userUpdate = "update userData set User_Name=?, Mobile_Number=? where Email=?";
 					PreparedStatement pSt = con.prepareStatement(userUpdate);
-					pSt.setString(1, updatePlayerData.get(0));pSt.setString(2, updatePlayerData.get(1));
+					pSt.setString(1, updateClubData.get(0));pSt.setString(2, updateClubData.get(1));
 					pSt.setString(3, globalEmail);
 					pSt.executeUpdate();
-					if(updatePlayerData.size() == 8) {
-						String profilepwdUpdate = "update userdata set Password='"+updatePlayerData.get(7)+"' where Email='"+globalEmail+"'";
+					if(updateClubData.size() == 8) {
+						String profilepwdUpdate = "update userdata set Password='"+updateClubData.get(7)+"' where Email='"+globalEmail+"'";
 						statement.executeUpdate(profilepwdUpdate);
 					}
 					if(fileNametoDB.get(0).equals("") == false) {
-						String profilepwdUpdate = "update playerdata set imageLocation='"+fileNametoDB.get(0)+"' where Email='"+globalEmail+"'";
+						String profilepwdUpdate = "update clubdata set imageLocation='"+fileNametoDB.get(0)+"' where Email='"+globalEmail+"'";
 						statement.executeUpdate(profilepwdUpdate);
 					}
 					if(fileNametoDB.get(1).equals("") == false) {
-						String profilepwdUpdate = "update playerdata set docsLocation='"+fileNametoDB.get(1)+"' where Email='"+globalEmail+"'";
+						String profilepwdUpdate = "update clubdata set docsLocation='"+fileNametoDB.get(1)+"' where Email='"+globalEmail+"'";
 						statement.executeUpdate(profilepwdUpdate);
 					}
 					request.setAttribute("UserMail", globalEmail);
-					request.getRequestDispatcher("Player.jsp").forward(request, response);
+					request.getRequestDispatcher("Club Management.jsp").forward(request, response);
 					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();

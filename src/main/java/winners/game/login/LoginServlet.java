@@ -55,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 				if(rs.getString(1).equalsIgnoreCase(email)) {
 					if(rs.getString(2).equals(password)) {
 						request.setAttribute("UserMail", email);
+						System.out.println(rs.getString(3));
 						request.getRequestDispatcher(rs.getString(3)+".jsp").forward(request, response);
 						break;
 					}else {

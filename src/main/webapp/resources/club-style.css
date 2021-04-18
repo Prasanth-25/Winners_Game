@@ -2,6 +2,10 @@ body{
 	background: #f3f2ef !important;
 }
 
+.chk-box{
+	margin-top: 10px
+}
+
 .bg-light{
 	background-color: #bd9898 !important;
 }

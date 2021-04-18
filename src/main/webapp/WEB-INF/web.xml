@@ -53,6 +53,18 @@
 		<description></description>
 		<servlet-class>winners.game.profile.UpdatePlayerServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ClubMetaData</servlet-name>
+		<display-name>ClubMetaData</display-name>
+		<description></description>
+		<servlet-class>winners.game.metadata.ClubMetaData</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UpdateClubServlet</servlet-name>
+		<display-name>UpdateClubServlet</display-name>
+		<description></description>
+		<servlet-class>winners.game.profile.UpdateClubServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
@@ -72,5 +84,13 @@
 	<servlet-mapping>
 		<servlet-name>UpdatePlayerServlet</servlet-name>
 		<url-pattern>/UpdatePlayerServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ClubMetaData</servlet-name>
+		<url-pattern>/ClubMetaData</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateClubServlet</servlet-name>
+		<url-pattern>/UpdateClubServlet</url-pattern>
 	</servlet-mapping>
 </web-app>

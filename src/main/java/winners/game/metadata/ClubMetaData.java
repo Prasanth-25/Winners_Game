@@ -1,13 +1,7 @@
 package winners.game.metadata;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,25 +9,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import winners.game.connection.DBConnection;
 
 /**
- * Servlet implementation class PlayerMetaData
+ * Servlet implementation class ClubMetaData
  */
-public class PlayerMetaData extends HttpServlet {
+public class ClubMetaData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public String globalName;
 	public String globalEmail;
-	List<String> playerData;
+	List<String> clubData;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PlayerMetaData() {
+    public ClubMetaData() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,6 +42,7 @@ public class PlayerMetaData extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String email = request.getParameter("email");
 		DBConnection dbconnection = new DBConnection();
@@ -102,7 +103,7 @@ public class PlayerMetaData extends HttpServlet {
 	        }
 	        
 	        DBConnection dbconnection = new DBConnection();
-	        List<String> playerBasicInfo = new ArrayList<String>();
+	        List<String> clubBasicInfo = new ArrayList<String>();
 			try {
 				Connection con = dbconnection.getConnection();
 				Statement statement = con.createStatement();
@@ -110,9 +111,9 @@ public class PlayerMetaData extends HttpServlet {
 				String sqlQuery = "select user_name, Email, Mobile_number from userdata where Email='"+globalEmail+"'";
 				ResultSet rs = statement.executeQuery(sqlQuery);
 				while(rs.next()) {
-					playerBasicInfo.add(rs.getString(1));
-					playerBasicInfo.add(rs.getString(2));
-					playerBasicInfo.add(rs.getString(3));
+					clubBasicInfo.add(rs.getString(1));
+					clubBasicInfo.add(rs.getString(2));
+					clubBasicInfo.add(rs.getString(3));
 				}  
 				con.close();
 			} catch (ClassNotFoundException e) {
@@ -126,7 +127,10 @@ public class PlayerMetaData extends HttpServlet {
 			try {
 				Connection con = dbconnection.getConnection();
 				Statement statement = con.createStatement();
-				String sqlQuery = "Insert into playerdata values ('"+ playerBasicInfo.get(0) + "','" + playerBasicInfo.get(1) + "','" + playerBasicInfo.get(2) + "','" + playerData.get(0) + "','" + playerData.get(1) + "','" + playerData.get(2) + "','" + playerData.get(3) + "','" + playerData.get(4) + "','" + playerData.get(5) + "','" + fileNametoDB.get(0) + "','" + fileNametoDB.get(1)+"','no')";
+				String sqlQuery = "Insert into clubdata values ('"+ clubBasicInfo.get(0) + "','" + 
+									clubBasicInfo.get(1) + "','" + clubBasicInfo.get(2) + "','" + clubData.get(0) + "','" +
+									clubData.get(1) + "','" + clubData.get(2) + "','" + clubData.get(3) + "','" + 
+									clubData.get(4) + "','" + fileNametoDB.get(0) + "','" + fileNametoDB.get(1)+"','no')";
 				int queryResult = statement.executeUpdate(sqlQuery);
 				if(queryResult>0) {
 					System.out.println("Records Has been Inserted Successfully..");
@@ -134,7 +138,7 @@ public class PlayerMetaData extends HttpServlet {
 					if(statement.executeUpdate(profileUpdate) > 0) {
 						System.out.println("Profile has been updated successfully...");
 						request.setAttribute("UserMail", globalEmail);
-						request.getRequestDispatcher("Player.jsp").forward(request, response);
+						request.getRequestDispatcher("Club Management.jsp").forward(request, response);
 					}
 				}else {
 					System.out.println("No Records Has been Inserted..");
@@ -155,25 +159,18 @@ public class PlayerMetaData extends HttpServlet {
 //			}
 //	        for (int i = 0; i < playerData.size(); i++) {
 //				System.out.println(playerData.get(i));
-//			}
+//			}*/
 	    } catch (FileUploadException e) {
-	    	//System.out.println("Servlet reached successfully");
-	    	playerData = new ArrayList<String>();
-	    	playerData.add(request.getParameter("sportsData"));
-	    	playerData.add(request.getParameter("roleData"));
-	    	playerData.add(request.getParameter("addressData"));
-	    	playerData.add(request.getParameter("address2Data"));
-	    	playerData.add(request.getParameter("cityData"));
-	    	playerData.add(request.getParameter("zipData"));
+	    	clubData = new ArrayList<String>();
+	    	clubData.add(request.getParameter("sportsData"));
+	    	clubData.add(request.getParameter("addressData"));
+	    	clubData.add(request.getParameter("address2Data"));
+	    	clubData.add(request.getParameter("cityData"));
+	    	clubData.add(request.getParameter("zipData"));
+	    	/*for (int i = 0; i < clubData.size(); i++) {
+				System.out.println(clubData.get(i));
+			}*/
 	    }
-	}
-
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

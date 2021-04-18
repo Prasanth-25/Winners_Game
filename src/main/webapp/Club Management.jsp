@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*,java.util.*" %>
 <%@ page import="winners.game.connection.DBConnection" %>
-<%List<String> playerInfo = new ArrayList<String>();%>
+<%List<String> clubInfo = new ArrayList<String>();%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +11,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="resources/style.css" rel="stylesheet">
-<link href="resources/player-style.css" rel="stylesheet">
+<link href="resources/club-style.css" rel="stylesheet">
 <script src="resources/jQuery/jquery.min.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
-<title>Player</title>
+<title>Club Management</title>
 </head>
 <body>
-	<form style="display:none" action="PlayerMetaData" method="get">
+	<form style="display:none" action="ClubMetaData" method="get">
 		<input type="text" name="email" value="<%= request.getAttribute("UserMail") %>">
 		<% if(request.getAttribute("userName") == null){ %>
-		<input id="player-data" type="submit" value="Login">
+		<input id="club-data" type="submit" value="Login">
 		<%} %>
 	</form>
 <nav class="navbar navbar-light bg-light">
@@ -40,27 +40,26 @@
 				try {
 					Connection con = dbconnection.getConnection();
 					Statement statement = con.createStatement();
-					String sqlQuery = "select * from playerdata where Email='"+request.getAttribute("userEmail")+"'";
+					String sqlQuery = "select * from clubdata where Email='"+request.getAttribute("userEmail")+"'";
 					ResultSet rs = statement.executeQuery(sqlQuery);
 					while(rs.next()) {
-						playerInfo.add(rs.getString(1));playerInfo.add(rs.getString(2));
-						playerInfo.add(rs.getString(3));playerInfo.add(rs.getString(4));
-						playerInfo.add(rs.getString(5));playerInfo.add(rs.getString(6));
-						playerInfo.add(rs.getString(7));playerInfo.add(rs.getString(8));
-						playerInfo.add(rs.getString(9));playerInfo.add(rs.getString(10));
-						playerInfo.add(rs.getString(11));
+						clubInfo.add(rs.getString(1));clubInfo.add(rs.getString(2));
+						clubInfo.add(rs.getString(3));clubInfo.add(rs.getString(4));
+						clubInfo.add(rs.getString(5));clubInfo.add(rs.getString(6));
+						clubInfo.add(rs.getString(7));clubInfo.add(rs.getString(8));
+						clubInfo.add(rs.getString(9));clubInfo.add(rs.getString(10));
 					}
 					sqlQuery = "select password from userData where Email='"+request.getAttribute("userEmail")+"'";
 					rs = statement.executeQuery(sqlQuery);
 					while(rs.next()){
-						playerInfo.add(rs.getString(1));
+						clubInfo.add(rs.getString(1));
 					}
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
 			%>
-			<img src="resources/upload-images/<%= playerInfo.get(9)%>" class="user-logo" alt="">
+			<img src="resources/upload-images/<%= clubInfo.get(8)%>" class="user-logo" alt="">
 			<%}%>
    </button>
     <button class="dropdown-toggle drop-btn" type="button" data-bs-toggle="dropdown">
@@ -82,7 +81,7 @@
 		<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("no")){ %>
 			<img class="left-user-img" src="resources/img/unnameduser.png">
 			<%} else if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){%>
-			<img class="left-user-img" src="resources/upload-images/<%= playerInfo.get(9)%>">
+			<img class="left-user-img" src="resources/upload-images/<%= clubInfo.get(8)%>">
 			<%}%>
 		</button>
 		<span id="displayName" class="user-name-left"><%= request.getAttribute("userName") %></span>
@@ -96,15 +95,14 @@
 		<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
 		<div class="third-userBlock">
 		<div class="profile-block">
-			<span style="font-size:20px;font-weight:500"><%= playerInfo.get(3)%></span><br>
-			<span style="font-size:1.1rem"><%= playerInfo.get(4)%></span><br>
+			<span style="font-size:20px;font-weight:500">Available Sports: <%= clubInfo.get(3)%></span><br>
 		</div><br>
 		<button class="docs-view" onclick="getCertsData()">My Certificates</button><br><br>
-		<embed id="docsData" src="resources/upload-images/<%= playerInfo.get(10)%>" width="100px" height="100px" type="application/pdf" hidden="true">
+		<embed id="docsData" src="resources/upload-images/<%= clubInfo.get(9)%>" width="100px" height="100px" type="application/pdf" hidden="true">
 		<div class="location-view">
-			<span><%= playerInfo.get(5)%></span><br>
-			<span><%= playerInfo.get(6)%></span><br>
-			<span><%= playerInfo.get(7)%> - <%= playerInfo.get(8)%></span>
+			<span><%= clubInfo.get(4)%></span><br>
+			<span><%= clubInfo.get(5)%></span><br>
+			<span><%= clubInfo.get(6)%> - <%= clubInfo.get(7)%></span>
 		</div>
 		</div>
 		<%}%>
@@ -118,19 +116,24 @@
 		<h2>Add some more details to your profile..</h2><br>
 		<form>
 		  <div class="row">
-		    <div class="form-group col-md-4">
-		      <label for="inputSport"><b>Pick a Sport</b></label>
-		      <select id="inputSport" class="form-control" name="sportsData">
-		        <option selected>Choose...</option>
-		        <option>Cricket</option>
-		        <option>VolleyBall</option>
-		        <option>FootBall</option>
-		        <option>BasketBall</option>
-		      </select>
-		    </div>
-		    <div class="col-md-6">
-		      <label for="Role"><b>Role</b></label>
-		      <input type="text" class="form-control" id="Role" name="roleData" placeholder="Describe your Role here ">
+		    <div class="form-group col-md-10">
+		      <label><b>Available Sports</b></label><br>
+		      <div class="form-check chk-box form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Cricket">
+				  <label class="form-check-label" for="inlineCheckbox1">Cricket</label>
+			  </div>
+			  <div class="form-check chk-box form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="VolleyBall">
+				  <label class="form-check-label" for="inlineCheckbox2">VolleyBall</label>
+			  </div>
+			  <div class="form-check chk-box form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="FootBall">
+				  <label class="form-check-label" for="inlineCheckbox3">FootBall</label>
+			  </div>
+			  <div class="form-check chk-box form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="BasketBall">
+				  <label class="form-check-label" for="inlineCheckbox4">BasketBall</label>
+			  </div>
 		    </div>
 		  </div><br>
 		  <div class="form-group col-md-10">
@@ -152,9 +155,9 @@
 		      <input type="text" name="zipData" class="form-control" id="inputZip">
 		    </div>
 		  </div><br>
-		  <button hidden="true" id="savePlayerData">Click</button>
+		  <button hidden="true" id="saveClubData">Click</button>
 		  </form>
-		  <form action="PlayerMetaData" method="post" enctype='multipart/form-data'>
+		  <form action="ClubMetaData" method="post" enctype='multipart/form-data'>
 			  <div class="form-group">
 			    <label for="formControlFile1"><b>Profile Photo</b></label><br>
 	    		<input type="file" name="file" class="form-control-file" id="formControlFile1">
@@ -163,27 +166,27 @@
 			    <label for="formControlFile2"><b>Certificates</b> <span style="font-size:13px">(Upload your Recent Nation-level or State-level certificates in a single PDF file)</span></label><br>
 	    		<input type="file" name="file" class="form-control-file" id="formControlFile2" accept="application/pdf">
 			  </div><br> 
-			  <button type="submit" id="updatePlayerData" class="btn btn-primary">Update</button>
+			  <button type="submit" id="updateClubData" class="btn btn-primary">Update</button>
 		</form>
 	</div>
 		<%}else if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){%>
-		<div class="row">
-		<%
-		List<String> playerList =new ArrayList<String>();
+			<div class="row">
+			<%
+			List<String> playerList =new ArrayList<String>();
 			DBConnection dbconnection = new DBConnection();
 			try {
 				Connection con = dbconnection.getConnection();
 				Statement statement = con.createStatement();
-				String sqlQuery = "select * from clubdata where profileApproved='no' ";
+				String sqlQuery = "select * from playerdata where profileApproved='no' ";
 				ResultSet rs = statement.executeQuery(sqlQuery);
 				while(rs.next()){%>
-				<div class="col-md-4" style="height: fit-content">
+					<div class="col-md-4" style="height: fit-content">
 					<div class="card" style="width: 18rem;">
-					  <img class="card-img-top" src="resources/upload-images/<%= rs.getString(9)%>" alt="Card image cap">
+					  <img class="card-img-top" src="resources/upload-images/<%= rs.getString(10)%>" alt="Card image cap">
 					  <div class="card-body">
 					    <h5 class="card-title"><%=rs.getString(1) %></h5>
 					    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					    <a href="#" class="btn btn-primary">Expand</a>
 					  </div>
 					</div>
 					</div>
@@ -191,7 +194,7 @@
 				con.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}%>
+			} %>
 		</div>
 	<%	} %>
 		
@@ -209,7 +212,7 @@
 		
 	<% if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){ %>
 		<div id="editProfilePopup" class="popup-screen">
-			<div id="updatePlayerContent" class="popup-profile-update">
+			<div id="updateClubContent" class="popup-profile-update">
 				<div id="closeEditPopup" class="close-profile-popup">
 				<span>X</span>
 				</div><br>
@@ -219,17 +222,17 @@
 				  <div class="row">
 				  <div class="col-md-5">
 				      <label for="updateUser"><b>Username</b></label>
-				      <input type="text" class="form-control" id="updateUser" name="updateUser" value="<%= playerInfo.get(0)%>">
+				      <input type="text" class="form-control" id="updateUser" name="updateUser" value="<%= clubInfo.get(0)%>">
 				    </div>
 				    <div class="col-md-5">
 				      <label for="updateNumber"><b>Mobile Number</b></label>
-				      <input type="text" class="form-control" id="updateNumber" name="updateNumber" value="<%= playerInfo.get(2)%>">
+				      <input type="text" class="form-control" id="updateNumber" name="updateNumber" value="<%= clubInfo.get(2)%>">
 				    </div>
 				   </div><br>
 				   <div class="row">
 					    <div class="col-md-5">
-					      <label for="updateRole"><b>Role</b></label>
-					      <input type="text" class="form-control" id="updateRole" name="updateRole" value="<%= playerInfo.get(4)%>">
+					      <label for="updateSports"><b>Available Sports</b></label>
+					      <input type="text" class="form-control" id="updateSports" name="updateSports" value="<%= clubInfo.get(3)%>">
 					    </div>
 					    <div id="pwdUpdateBtn" class="col-md-4">
 					      <label><b>Password</b></label>
@@ -240,7 +243,7 @@
 					    <label><b>Current Password</b></label>
 					    <input type="password" style="width:78%" class="form-control" id="currentPass" placeholder="Type Current Password">
 					    <span style="color:#ff0000;margin-left:3px" id="wrongPass">Wrong Password!.Try again..</span>
-					    <button style="float: right;margin-top: -39px;" class="btn btn-primary" onclick="validateCurrentPwd(event,'<%= playerInfo.get(11)%>')">Change</button>
+					    <button style="float: right;margin-top: -39px;" class="btn btn-primary" onclick="validateCurrentPwd(event,'<%= clubInfo.get(10)%>')">Change</button>
 					    </div>
 					    <div id="pwdSet" class="col-md-5">
 					    <label><b>New Password</b></label>
@@ -258,25 +261,25 @@
 				    <br>
 				  <div class="form-group col-md-10">
 				    <label for="updateAddress"><b>Address</b></label>
-				    <input type="text" class="form-control" id="updateAddress" name="updateAddress" value="<%= playerInfo.get(5)%>">
+				    <input type="text" class="form-control" id="updateAddress" name="updateAddress" value="<%= clubInfo.get(4)%>">
 				  </div><br>
 				  <div class="form-group col-md-10">
 				    <label for="updateAddress2"><b>Address line 2</b></label>
-				    <input type="text" class="form-control" id="updateAddress2" name="updateAddress2" value="<%= playerInfo.get(6)%>">
+				    <input type="text" class="form-control" id="updateAddress2" name="updateAddress2" value="<%= clubInfo.get(5)%>">
 				  </div><br>
 				  <div class="row">
 				    <div class="form-group col-md-6">
 				      <label for="updateCity"><b>City</b></label>
-				      <input type="text" name="updateCity" class="form-control" id="updateCity" value="<%= playerInfo.get(7)%>">
+				      <input type="text" name="updateCity" class="form-control" id="updateCity" value="<%= clubInfo.get(6)%>">
 				    </div>
 				    <div class="form-group col-md-2">
 				      <label for="updateZip"><b>Zip</b></label>
-				      <input type="text" name="updateZip" class="form-control" id="updateZip" value="<%= playerInfo.get(8)%>">
+				      <input type="text" name="updateZip" class="form-control" id="updateZip" value="<%= clubInfo.get(7)%>">
 				    </div>
 				  </div><br>
 				  <button hidden="true" id="myProfileData">Click</button>
 		  		</form>
-		  		 <form action="UpdatePlayerServlet" method="post" enctype='multipart/form-data'>
+		  		 <form action="UpdateClubServlet" method="post" enctype='multipart/form-data'>
 				  <div class="form-group">
 				    <label for="formControlFile1"><b>Profile Photo</b></label><br>
 		    		<input type="file" name="file" class="form-control-file" id="formControlFile1">
@@ -297,31 +300,34 @@
 
 </body>
 <script type="text/javascript">
-$('#player-data').click();
+$('#club-data').click();
 $('#docsPopupView').hide();
 $('#editProfilePopup').hide();
-$("#updatePlayerData").on('click', function(){
-	
-		$("#savePlayerData").click()
-		
-	
+$("#updateClubData").on('click', function(e){
+		$("#saveClubData").click();
 });
 var pwdValidation;
 $("#wrongPass").hide();
-$("#savePlayerData").on('click', function(){
-	console.log("Clicked")
-	let playerData = {}
-	playerData["sportsData"] = $('#inputSport').val();
-	playerData["roleData"] = $('#Role').val();
-	playerData["addressData"] = $('#inputAddress').val();
-	playerData["address2Data"] = $('#inputAddress2').val();
-	playerData["cityData"] = $('#inputCity').val();
-	playerData["zipData"] = $('#inputZip').val();
-	console.log(playerData)
+$("#saveClubData").on('click', function(e){
+	e.preventDefault();
+	var inputSport = "";
+	$(':checkbox:checked').each(function(i){
+		if(i === 0)
+			inputSport = $(this).val();
+		else
+			inputSport = inputSport + "," + $(this).val();
+        });
+	let clubData = {}
+	clubData["sportsData"] = inputSport;
+	clubData["addressData"] = $('#inputAddress').val();
+	clubData["address2Data"] = $('#inputAddress2').val();
+	clubData["cityData"] = $('#inputCity').val();
+	clubData["zipData"] = $('#inputZip').val();
+	//console.log(clubData)
 	$.ajax({
-		  url: 'PlayerMetaData',
+		  url: 'ClubMetaData',
 		  type: 'POST',
-		  data: playerData,
+		  data: clubData,
 		  success: function(response) {}
 		});
 	});
@@ -413,7 +419,7 @@ $("#myProfileData").on('click', function(e){
 	playerData["email"] = '<%=request.getAttribute("userEmail")%>';
 	playerData["nameUpdate"] = $('#updateUser').val();
 	playerData["numberUpdate"] = $('#updateNumber').val();
-	playerData["roleUpdate"] = $('#updateRole').val();
+	playerData["sportsUpdate"] = $('#updateSports').val();
 	playerData["addressUpdate"] = $('#updateAddress').val();
 	playerData["address2Update"] = $('#updateAddress2').val();
 	playerData["cityUpdate"] = $('#updateCity').val();
@@ -423,7 +429,7 @@ $("#myProfileData").on('click', function(e){
 	}
 	//console.log(playerData)
 	$.ajax({
-		  url: 'UpdatePlayerServlet',
+		  url: 'UpdateClubServlet',
 		  type: 'GET',
 		  data: playerData,
 		  success: function(response) {}
