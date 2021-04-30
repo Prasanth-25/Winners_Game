@@ -1,0 +1,7 @@
+Field,Type,Null,Key,Default,Extra
+User_Name,varchar(255),NO,,NULL,
+Email,varchar(255),NO,PRI,NULL,
+Mobile_Number,varchar(10),NO,,NULL,
+Password,varchar(255),NO,,NULL,
+User_Type,varchar(20),NO,,NULL,
+Profile_Updated,varchar(5),NO,,NULL,

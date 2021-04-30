@@ -1,0 +1,12 @@
+Field,Type,Null,Key,Default,Extra
+name,varchar(255),YES,,NULL,
+email,varchar(255),NO,PRI,NULL,
+contact_number,varchar(10),YES,,NULL,
+availableSports,varchar(255),YES,,NULL,
+address,varchar(255),YES,,NULL,
+addressExtended,varchar(255),YES,,NULL,
+city,varchar(255),YES,,NULL,
+zipCode,varchar(255),YES,,NULL,
+imageLocation,varchar(255),YES,,NULL,
+docsLocation,varchar(255),YES,,NULL,
+profileApproved,varchar(255),YES,,NULL,
