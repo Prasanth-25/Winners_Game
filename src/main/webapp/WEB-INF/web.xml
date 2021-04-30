@@ -65,6 +65,18 @@
 		<description></description>
 		<servlet-class>winners.game.profile.UpdateClubServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ProfileData</servlet-name>
+		<display-name>ProfileData</display-name>
+		<description></description>
+		<servlet-class>winners.game.metadata.ProfileData</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FilterContent</servlet-name>
+		<display-name>FilterContent</display-name>
+		<description></description>
+		<servlet-class>winners.game.metadata.FilterContent</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
@@ -92,5 +104,13 @@
 	<servlet-mapping>
 		<servlet-name>UpdateClubServlet</servlet-name>
 		<url-pattern>/UpdateClubServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ProfileData</servlet-name>
+		<url-pattern>/ProfileData</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FilterContent</servlet-name>
+		<url-pattern>/FilterContent</url-pattern>
 	</servlet-mapping>
 </web-app>

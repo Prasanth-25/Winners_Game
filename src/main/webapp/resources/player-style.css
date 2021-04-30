@@ -260,3 +260,53 @@ body{
     font-size: 15px;
     margin-top: 10px;
 }
+
+.card-img-top{
+	width:222px;
+	height:210px;
+}
+
+.card-title{
+	text-align: center;
+}
+
+.data-box{
+	float: left;
+    width: 25%;
+}
+
+.certs-profile-box{
+	float: right;
+    width: 66%;
+    height: 75%;
+    border: 1px solid lightblue;
+}
+
+#cert-text{
+	margin: 20%;
+    filter: opacity(0.5);
+}
+#cert-text-status{
+	margin: 20%;
+    filter: opacity(0.5);
+}
+
+#certs-style:hover{
+	text-decoration: underline;
+}
+
+.close-profile-popup{
+	font-weight: bolder;
+    width: 30px;
+    float: right;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: cursive;
+    /* position: relative; */
+    margin: 15px;
+}
+
+.close-profile-popup:hover {
+    background: lightgrey;
+}

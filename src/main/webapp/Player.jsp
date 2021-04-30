@@ -48,7 +48,7 @@
 						playerInfo.add(rs.getString(5));playerInfo.add(rs.getString(6));
 						playerInfo.add(rs.getString(7));playerInfo.add(rs.getString(8));
 						playerInfo.add(rs.getString(9));playerInfo.add(rs.getString(10));
-						playerInfo.add(rs.getString(11));
+						playerInfo.add(rs.getString(11));playerInfo.add(rs.getString(12));
 					}
 					sqlQuery = "select password from userData where Email='"+request.getAttribute("userEmail")+"'";
 					rs = statement.executeQuery(sqlQuery);
@@ -166,7 +166,27 @@
 			  <button type="submit" id="updatePlayerData" class="btn btn-primary">Update</button>
 		</form>
 	</div>
-		<%}else if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){%>
+		<%}else if(request.getAttribute("profileUpdated") != null && request.getAttribute("profileUpdated").equals("yes")){
+			if(playerInfo.get(11).equals("yes")){
+		%>
+		<!-- <button id="filterBtn" style="float:right;margin-top:5px" class="btn btn-primary">Filter</button>
+		<div id="filterByData" style="float:right;margin-top:5px">
+		<form action="FilterContent" method="get">
+			<span><b>Pick a Sport: </b></span>
+			<input type="text" name="emailData" value="<%= request.getAttribute("userEmail") %>">
+		      <select id="filterSport" class="form-control" style="width:35%;display:inline" name="filterSportsData">
+		        <option selected>Choose...</option>
+		        <option>Cricket</option>
+		        <option>VolleyBall</option>
+		        <option>FootBall</option>
+		        <option>BasketBall</option>
+		      </select>
+		      <span id="clearfilter" style="color:#0a66c2;text-decoration:underline;cursor:pointer">Clear Filter</span>
+		      <button hidden="true" id="filterFormBtn">Click</button>
+		      </form>
+		</div>
+		<br> -->
+		<div class="container">
 		<div class="row">
 		<%
 		List<String> playerList =new ArrayList<String>();
@@ -174,16 +194,19 @@
 			try {
 				Connection con = dbconnection.getConnection();
 				Statement statement = con.createStatement();
-				String sqlQuery = "select * from clubdata where profileApproved='no' ";
+				String sqlQuery = "select * from clubdata where profileApproved='yes' ";
 				ResultSet rs = statement.executeQuery(sqlQuery);
-				while(rs.next()){%>
+				while(rs.next()){
+					//if(rs.getString(4).contains("cricket")){
+				%>
 				<div class="col-md-4" style="height: fit-content">
-					<div class="card" style="width: 18rem;">
+					<div class="card" style="width: 14rem;">
 					  <img class="card-img-top" src="resources/upload-images/<%= rs.getString(9)%>" alt="Card image cap">
 					  <div class="card-body">
-					    <h5 class="card-title"><%=rs.getString(1) %></h5>
-					    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					    <h5 class="card-title"><b><%=rs.getString(1) %></b></h5>
+					    <span><b>Available Sports:</b></span>
+					    <p class="card-text"><%=rs.getString(4) %></p>
+					    <button id="expandProfile" onclick="showProfile('<%= rs.getString(2)%>')" class="btn btn-primary">Expand</button>
 					  </div>
 					</div>
 					</div>
@@ -193,7 +216,13 @@
 				e.printStackTrace();
 			}%>
 		</div>
-	<%	} %>
+		</div>
+	<%	}else{%>
+			<h5 id="cert-text-status">
+			<span>Please wait.. Your Profile is in review. </span><br>
+			<span>You will able to see the available clubs once your profile has been approved by admin.</span> 
+			</h5>
+	<%}} %>
 		
 		</div>
 		<div id="docsPopupView" class="popup-screen">
@@ -240,7 +269,7 @@
 					    <label><b>Current Password</b></label>
 					    <input type="password" style="width:78%" class="form-control" id="currentPass" placeholder="Type Current Password">
 					    <span style="color:#ff0000;margin-left:3px" id="wrongPass">Wrong Password!.Try again..</span>
-					    <button style="float: right;margin-top: -39px;" class="btn btn-primary" onclick="validateCurrentPwd(event,'<%= playerInfo.get(11)%>')">Change</button>
+					    <button style="float: right;margin-top: -39px;" class="btn btn-primary" onclick="validateCurrentPwd(event,'<%= playerInfo.get(12)%>')">Change</button>
 					    </div>
 					    <div id="pwdSet" class="col-md-5">
 					    <label><b>New Password</b></label>
@@ -294,12 +323,42 @@
 		<%} %>
 	</div>
 	
+	<div id="profilePopupView" class="popup-screen">
+			<div class="popup-content">
+				<div id="closeProfilePopup" class="close-profile-popup">
+				<span>X</span>
+				</div><br>
+				<div class="container">
+				<div class="data-box">
+					<p><b>Username: </b><span id="profilename"></span></p>
+					<p><b>Email: </b><span id="profilemail"></span></p>
+					<p><b>Number: </b><span id="profilemobile"></span></p>
+					<p><b>Sports: </b><span id="profilesports"></span></p>
+					<p id="roleShow"><b>Role: </b><span id="profilerole"></span></p>
+					<p><b>Address: </b>
+					<span id="profileaddress"></span><br>
+					<span id="profileaddress2"></span><br>
+					<span id="profilecity"></span>-<span id="profilezip"></span>
+					</p>
+					<p id="certs-style" style="color:#2874f0;cursor:pointer"><b>Show Certificate</b></p>
+					<embed id="docsProfileData" src="" width="100px" height="100px" type="application/pdf" hidden="true">
+				</div>
+				<div class="certs-profile-box">
+					<h3 id="cert-text">Click the document to view here..</h3>
+					<embed src="" type="application/pdf" width="100%" height="100%" id="viewProfileCerts">
+				</div>
+				</div>
+			</div>
+		</div>
+	
 
 </body>
 <script type="text/javascript">
 $('#player-data').click();
+$("#filterByData").hide();
 $('#docsPopupView').hide();
 $('#editProfilePopup').hide();
+$('#profilePopupView').hide();
 $("#updatePlayerData").on('click', function(){
 	
 		$("#savePlayerData").click()
@@ -329,6 +388,37 @@ function getCertsData(){
 	$('#viewCerts').attr('src', $("#docsData").attr('src'));
 	$('#docsPopupView').show();
 }
+function showProfile(email){
+	$("#viewProfileCerts").hide();$("#cert-text").show();
+	let playerData = {};
+	playerData["profileEmail"] = email;
+	$.ajax({
+		  url: 'ProfileData',
+		  type: 'GET',
+		  data: playerData,
+		  dataType: 'JSON',
+		  success: function(response) {
+			  $("#profilename").text(response[0]);$("#profilemail").text(response[1]);
+			  $("#profilemobile").text(response[2]);$("#profilesports").text(response[3]);
+			 if(response.length === 11){
+				 $("#roleShow").show();$("#profilerole").text(response[4]);
+				 $("#profileaddress").text(response[5]);$("#profileaddress2").text(response[6]);
+				 $("#profilecity").text(response[7]);$("#profilezip").text(response[8]);
+				 $('#profilePopupView').show();
+				 $('#docsProfileData').attr('src', 'resources/upload-images/'+response[10]);
+			 }else{
+				 $("#roleShow").hide();$("#profileaddress").text(response[4]);
+				 $("#profileaddress2").text(response[5]);$("#profilecity").text(response[6]);
+				 $("#profilezip").text(response[7]);$('#profilePopupView').show();
+				 $('#docsProfileData').attr('src', 'resources/upload-images/'+response[9]);
+			 }
+		  }
+		});
+}
+$("#certs-style").on('click', function(){
+	$("#cert-text").hide();$("#viewProfileCerts").show();
+	 $('#viewProfileCerts').attr('src', $("#docsProfileData").attr('src'));
+});
 $("#closePopup").on('click', function(){
 	$('#docsPopupView').hide();
 });
@@ -336,13 +426,42 @@ $("#closeEditPopup").on('click', function(){
 	$('#editProfilePopup').hide();
 	$("#pwdUpdateBtn").show();
 });
+$("#closeProfilePopup").on('click', function(){
+	$('#profilePopupView').hide();
+});
+$("#profilePopupView").on('click', function(e){
+	if(e.target.id === "profilePopupView"){
+		$('#profilePopupView').hide();
+	}
+});
 $("#docsPopupView").on('click', function(){
 	$('#docsPopupView').hide();
+});
+$("#filterBtn").on('click', function(e){
+	$("#filterBtn").hide();
+	$("#filterByData").show();
+});
+
+$("#filterSport").on('change', function(e){
+	/*let playerData = {}
+	playerData["filterSport"] = $("#filterSport").val();
+	$.ajax({
+		  url: 'FilterContent',
+		  type: 'GET',
+		  data: playerData,
+		  success: function(response) {}
+		});*/
+		$("#filterFormBtn").click();
+});
+$("#clearfilter").on('click', function(e){
+	$("#filterBtn").show();$("#filterSport").val("Choose...");
+	$("#filterByData").hide();
 });
 $(document).on('keydown', function(e){
 	if(e.keyCode === 27){
 		$('#docsPopupView').hide();
 		$('#editProfilePopup').hide();
+		$('#profilePopupView').hide();
 		$("#pwdUpdateBtn").show();
 	}
 });

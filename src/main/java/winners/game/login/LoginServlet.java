@@ -42,6 +42,7 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		DBConnection dbconnection = new DBConnection();
+		boolean credentialsValidation = false;
 		try {
 			Connection con = dbconnection.getConnection();
 			Statement statement = con.createStatement();
@@ -54,16 +55,23 @@ public class LoginServlet extends HttpServlet {
 			while(rs.next()) {
 				if(rs.getString(1).equalsIgnoreCase(email)) {
 					if(rs.getString(2).equals(password)) {
-						request.setAttribute("UserMail", email);
-						System.out.println(rs.getString(3));
-						request.getRequestDispatcher(rs.getString(3)+".jsp").forward(request, response);
+						credentialsValidation = true;
 						break;
 					}else {
 						System.out.println("Password Wrong");
+						credentialsValidation = false;
 					}
 				}else {
 					System.out.println("Username wrong");
+					credentialsValidation = false;
 				}
+			}
+			if(credentialsValidation == true) {
+				request.setAttribute("UserMail", email);
+				System.out.println(rs.getString(3));
+				request.getRequestDispatcher(rs.getString(3)+".jsp").forward(request, response);
+			}else {
+				response.sendRedirect("index.html");
 			}
 			con.close();
 		} catch (ClassNotFoundException e) {
